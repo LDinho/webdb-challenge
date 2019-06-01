@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 const {
+  getProjects,
+  addProject,
+  getProject,
 
 } = require('../helpers/projectDbHelper');
 
@@ -13,6 +16,20 @@ const {
 */
 
 router.get('/', async (req, res) => {
+  try {
+    const projects = await getProjects();
+
+    if (projects.length) {
+      res.status(200).json(projects)
+
+    } else {
+      res.status(404).json({message: `No projects found`})
+
+    }
+  }
+  catch (err) {
+    res.status(500).json({error: `Unable to retrieve projects`})
+  }
 
 });
 
