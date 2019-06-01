@@ -46,11 +46,32 @@ router.get('/:id', async (req, res) => {
 
 /*
 @POST: create new project
-@PARAMS: name[STRING]! and description[STRING]!
+@PARAMS: project[Obj]!
 @ROUTE: "/api/projects"
 */
 
 router.post('/', async (req, res) => {
+  const newProject = req.body;
+
+  const { name, description} = newProject;
+
+  try {
+
+    if (!name || !description) {
+      return res.status(400)
+        .json({
+          errorMessage: "name/description missing."
+        });
+    }
+
+    const projectAdded = await addProject(newProject);
+
+    return res.status(201).json(projectAdded);
+
+  }
+  catch (err) {
+    res.status(500).json({error: `Server error`})
+  }
 
 })
 
