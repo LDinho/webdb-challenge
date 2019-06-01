@@ -40,6 +40,27 @@ router.get('/', async (req, res) => {
 */
 
 router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const project = await getProject(id);
+
+    if (!project) {
+      return res.status(404)
+        .json({
+          message: 'project not found'
+        });
+    }
+
+    res.status(200).json(project);
+  }
+  catch (err) {
+    res.status(500)
+      .json({
+        err,
+        message: 'Unable to process request'
+      })
+  }
 
 });
 
